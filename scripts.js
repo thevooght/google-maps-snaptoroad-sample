@@ -1,4 +1,4 @@
-var apiKey = 'YOUR_API_KEY_HERE';
+var apiKey = '';
 
 var map;
 var drawingManager;
@@ -9,7 +9,7 @@ var snappedCoordinates = [];
 function initialize() {
   var mapOptions = {
     zoom: 17,
-    center: {lat: -33.8667, lng: 151.1955}
+    center: {lat: 51.053882858293804, lng: 3.5538190128750373}
   };
   map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
@@ -99,6 +99,15 @@ function processSnapToRoadResponse(data) {
     snappedCoordinates.push(latlng);
     placeIdArray.push(data.snappedPoints[i].placeId);
   }
+  //Download csv with the Snapped Data
+  var csvContent = snappedCoordinates.join("\r\n");
+  var excel_file = document.createElement('a');
+  excel_file.setAttribute('href', 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent         (csvContent));
+  excel_file.setAttribute('download', 'snappedData.csv');
+  document.body.appendChild(excel_file);
+  excel_file.click();
+  document.body.removeChild(excel_file);
+
   console.log("snappedCoordinates", snappedCoordinates)
 }
 
